@@ -8,6 +8,11 @@ class EventModelAPIView(generics.ListAPIView):
     serializer_class=EventModelSerializer
 
 
+
+class EventModelListAPIView(generics.ListAPIView):
+    queryset=EventModel.objects.all()
+    serializer_class=EventModelSerializer    
+
 class EventModelDetailAPIView(generics.RetrieveAPIView):
 
     lookup_field = "name"
