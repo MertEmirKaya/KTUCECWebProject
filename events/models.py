@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-import datetime
+from datetime import datetime,timedelta
 # Create your models here.
 
 class EventModel(models.Model):
@@ -19,15 +19,13 @@ class EventModel(models.Model):
     available=models.BooleanField(default=True)
 
     def is_expired(self):
-        if datetime.now > self.events_date:
-            self.available=False
+        now= datetime.strptime(str(datetime.now()), "%Y-%m-%d %H:%M:%S.%f")
+        event_time=datetime.strptime(str(self.events_date)[:19], "%Y-%m-%d %H:%M:%S")
+        if now > event_time:
+            
             return True
-        self.available =True   
         return False
-
-
-
-
+        
     def __str__(self) -> str:
         return self.name
     
