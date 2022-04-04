@@ -1,15 +1,11 @@
-
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import generics
 from  registration.models import ProfileModel
-from .serializers import ProfileModelSerializer
+from .serializers import ProfileModelSerializer,ChangePasswordSerializer
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authtoken.models import Token
-
 import jwt
 
 
@@ -89,7 +85,7 @@ class DeleteProfileAPIView(generics.DestroyAPIView):
 
 
 
-class UpdateProfileModelView(generics.RetrieveUpdateAPIView):
+class UpdateProfileModelView(generics.UpdateAPIView):
     serializer_class=ProfileModelSerializer
     queryset=ProfileModel.objects.all()
     permission_classes = [IsAuthenticated]
@@ -97,16 +93,17 @@ class UpdateProfileModelView(generics.RetrieveUpdateAPIView):
 
 
     def update(self, request, *args, **kwargs):
-        username=self.kwargs.get('username')
-        profile=ProfileModel.objects.get(username=username)
 
         key='super-secret'
         payload={"id":str(request.user.id),}
         token= jwt.encode(payload, key)
-        
         decoded = jwt.decode(token, options={"verify_signature": False}) # works in PyJWT >= v2.0
+
+        username=self.kwargs.get('username')
+        profile=ProfileModel.objects.get(username=username)
         
         if str(decoded['id']) == str(profile.id):
+
 
             updated_data=request.data      
             updated_profile=ProfileModel.objects.filter(username=username).update(
@@ -118,13 +115,34 @@ class UpdateProfileModelView(generics.RetrieveUpdateAPIView):
                                                         phone=updated_data['phone'],
                                                         departmand=updated_data['departmand'],
                                                         grade=updated_data['grade'],
-                                                        fee=bool(updated_data['fee']),
-                                                        register_date=updated_data['register_date'],
-            
+                                                        
+       
             )
-            return Response(status=status.HTTP_200_OK)     
+            return Response(status=status.HTTP_200_OK) 
+                
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-               
 
-          
+
+        
+class ChangePasswordAPIView(generics.UpdateAPIView):
+    serializer_class=ChangePasswordSerializer
+    permission_classes = [IsAuthenticated]
+    queryset=ProfileModel.objects.all()
+    lookup_field='username'            
+
+    def update(self, request, *args, **kwargs):
+        key='super-secret'
+        payload={"id":str(request.user.id),}
+        token= jwt.encode(payload, key)
+        decoded = jwt.decode(token, options={"verify_signature": False}) # works in PyJWT >= v2.0
+
+        username=self.kwargs.get('username')
+        profile=ProfileModel.objects.get(username=username)
+        
+        if str(decoded['id']) == str(profile.id):
+            return super().update(request, *args, **kwargs)
+               
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+     
