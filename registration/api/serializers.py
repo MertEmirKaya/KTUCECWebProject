@@ -4,6 +4,8 @@ from registration.models import ProfileModel
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 
+
+
 class ProfileModelSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -34,14 +36,6 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate(self, data):
         if data['password1']!=data['password2']:
             raise serializers.ValidationError({"Error":"Passwords must  be the same!"})
-
-
-        profile=ProfileModel.objects.get(email=data['email'])
-        if profile.password != data["old_password"]:
-            print(profile.password)
-            print(make_password(data["old_password"]))
-            raise serializers.ValidationError("Password isn't true.")
-
 
         return data
 

@@ -10,6 +10,21 @@ import jwt
 
 
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView
+)
+
+class LoginAPIView(TokenObtainPairView):
+    
+    def post(self, request, *args, **kwargs):
+        email=request.data['email']
+        request.data._mutable = True
+        profile=ProfileModel.objects.get(email=email)
+        request.data['username']=profile.username
+        print( request.data['username'])
+        request.data._mutable = False
+        return super().post(request, *args, **kwargs)
+
 
 class ProfileModelListAPIView(generics.ListAPIView):
     queryset = ProfileModel.objects.all()

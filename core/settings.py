@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework.authtoken',
     'drf_yasg',
+    'rest_framework_simplejwt.token_blacklist',
+    
     
     
 ]
@@ -142,4 +144,4 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'registration.ProfileModel'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),}
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),}
