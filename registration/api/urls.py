@@ -1,6 +1,12 @@
 from django.urls import path,include
-from .views import ProfileModelListAPIView,RegistrationAPIView,DeleteProfileAPIView,ProfileDetailAPIView,UpdateProfileModelView,ChangePasswordAPIView
-
+from .views import (ProfileModelListAPIView,
+                    RegistrationAPIView,
+                    DeleteProfileAPIView,
+                    ProfileDetailAPIView,UpdateProfileModelView,ChangePasswordAPIView,LoginAPIView,LogoutView)
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('',ProfileModelListAPIView.as_view()),
@@ -9,4 +15,7 @@ urlpatterns = [
     path('<str:username>',ProfileDetailAPIView.as_view()),
     path('<str:username>/update/',UpdateProfileModelView.as_view()),
     path("<str:username>/change-password/",ChangePasswordAPIView.as_view()),
+    path('login/', LoginAPIView.as_view(), name='login'),
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+     path('logout/', LogoutView.as_view(), name='logout'),
 ]

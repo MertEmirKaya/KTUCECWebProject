@@ -7,9 +7,7 @@ from rest_framework import serializers
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 import jwt
-
-
-
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import (
     TokenObtainPairView
 )
@@ -21,9 +19,23 @@ class LoginAPIView(TokenObtainPairView):
         request.data._mutable = True
         profile=ProfileModel.objects.get(email=email)
         request.data['username']=profile.username
-        print( request.data['username'])
         request.data._mutable = False
         return super().post(request, *args, **kwargs)
+
+
+class LogoutView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class ProfileModelListAPIView(generics.ListAPIView):
@@ -39,24 +51,6 @@ class ProfileDetailAPIView(generics.RetrieveAPIView):
     queryset=ProfileModel.objects.all()
     serializer_class=ProfileModelSerializer
     lookup_field='username'
-
-    permission_classes = [IsAuthenticated]
-    
-
-    def retrieve(self, request, *args, **kwargs):
-        username=self.kwargs.get('username')
-        profile=ProfileModel.objects.get(username=username)
-        key='super-secret'
-        payload={"id":str(request.user.id),}
-        token= jwt.encode(payload, key)
-        print(token)
-        decoded = jwt.decode(token, options={"verify_signature": False}) # works in PyJWT >= v2.0
-        print (decoded['id'])
-        if request.user.id==profile.id:
-            print("YYES!")
-        return super().retrieve(request, *args, **kwargs)
-
-
 
 
 class RegistrationAPIView(generics.CreateAPIView):
@@ -107,8 +101,8 @@ class UpdateProfileModelView(generics.UpdateAPIView):
     lookup_field='username'
 
 
-    def update(self, request, *args, **kwargs):
-
+    def patch(self, request, *args, **kwargs):
+        
         key='super-secret'
         payload={"id":str(request.user.id),}
         token= jwt.encode(payload, key)
@@ -120,23 +114,12 @@ class UpdateProfileModelView(generics.UpdateAPIView):
         if str(decoded['id']) == str(profile.id):
 
 
-            updated_data=request.data      
-            updated_profile=ProfileModel.objects.filter(username=username).update(
-                                                        first_name=updated_data['first_name'],
-                                                        last_name=updated_data['last_name'],
-                                                        email=updated_data['email'],
-                                                        bio=updated_data['bio'],
-                                                        school_number=str(updated_data['school_number']),
-                                                        phone=updated_data['phone'],
-                                                        departmand=updated_data['departmand'],
-                                                        grade=updated_data['grade'],
-                                                        
-       
-            )
-            return Response(status=status.HTTP_200_OK) 
+            return super().patch(request, *args, **kwargs)
                 
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+
 
 
         
@@ -146,7 +129,9 @@ class ChangePasswordAPIView(generics.UpdateAPIView):
     queryset=ProfileModel.objects.all()
     lookup_field='username'            
 
+
     def update(self, request, *args, **kwargs):
+
         key='super-secret'
         payload={"id":str(request.user.id),}
         token= jwt.encode(payload, key)
