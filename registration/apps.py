@@ -5,3 +5,5 @@ class RegistrationConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'registration'
 
+    def ready(self) -> None:
+        from . import signals

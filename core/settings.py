@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
     'rest_framework_simplejwt.token_blacklist',
-    
-    
+    'django_rest_passwordreset',
     
 ]
 
@@ -149,3 +148,13 @@ AUTH_USER_MODEL = 'registration.ProfileModel'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),}
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'    
+
+EMAIL_HOST = 'smtp.outlook.com'
+EMAIT_PORT = 587 
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mertemir_54@outlook.com'
+EMAIL_HOST_PASSWORD='Esmer1263.'
+EMAIL_USE_SSL=False
