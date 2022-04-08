@@ -15,17 +15,8 @@ class EventModel(models.Model):
     location=models.CharField(max_length=100,blank=True)
     statement=models.TextField()
     content=models.CharField(max_length=90,blank=True)
-    user_who_attend=models.ManyToManyField(User,related_name='listOfUsers',null=True,blank=True)
-    available=models.BooleanField(default=True)
 
-    def is_expired(self):
-        now= datetime.strptime(str(datetime.now()), "%Y-%m-%d %H:%M:%S.%f")
-        event_time=datetime.strptime(str(self.events_date)[:19], "%Y-%m-%d %H:%M:%S")
-        if now > event_time:
-            
-            return True
-        return False
-        
     def __str__(self) -> str:
         return self.name
     
+
