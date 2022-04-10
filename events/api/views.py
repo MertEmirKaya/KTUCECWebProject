@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 
 class EventModelListAPIView(generics.ListAPIView):
-    queryset=EventModel.objects.all()
+    queryset=EventModel.objects.filter(is_ready=True)
     serializer_class=EventModelSerializer    
 
 
@@ -17,13 +17,6 @@ class EventModelDetailAPIView(generics.RetrieveAPIView):
     serializer_class=EventModelSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        name=self.kwargs.get('name')
-        event=EventModel.objects.get(name=name)
-        
-        if event.is_expired():
-            EventModel.objects.filter(name=name).update(available=False)
-            
-
         return super().retrieve(request, *args, **kwargs)
 
 
