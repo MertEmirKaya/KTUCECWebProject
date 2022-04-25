@@ -13,7 +13,7 @@ class EventModelListAPIView(generics.ListAPIView):
 class EventModelDetailAPIView(generics.RetrieveAPIView):
 
     lookup_field = "name"
-    queryset=EventModel.objects.all()
+    queryset=EventModel.objects.filter(is_ready=True)
     serializer_class=EventModelSerializer
 
     def retrieve(self, request, *args, **kwargs):
