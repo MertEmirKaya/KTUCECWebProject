@@ -1,25 +1,35 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from registration.models import ProfileModel
-from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
-
-
 
 class ProfileModelSerializer(serializers.ModelSerializer):
     
     class Meta:
         model=ProfileModel
-        fields=['id','bio','username','first_name','last_name','email','phone','departmand','grade','created_time','school_number','password','image']
-        read_only_fields=('fee','register_date')
-        write_only_fields = ('password','password1','password2',)
+        fields=['id','bio','username','first_name','last_name','email','phone','departmand','grade','created_time','school_number','image','password']
+        read_only_fields=('fee','register_date')    
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'password1': {'write_only': True},
+            'password2': {'write_only': True},
+        }
     def validate_phone(self,value):
         if len(value) !=10:
             raise serializers.ValidationError("Telefon numarası 10 haneli girilmelidir.")
         return value
 
-    
+    def validate(self, data):
+        numbers=["1","2","3","4","5","6","7","8","9","0"]
+        for number in numbers:
+            if number in data['username']:
+                raise serializers.ValidationError({'Error':"No int characters!"})
 
+
+        return data
+
+
+    
     def create(self, validated_data):
         validated_data['password']=make_password(validated_data['password'])
         return super().create(validated_data)

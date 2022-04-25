@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)js#^n=z^c3e*=6=plmd@u!nayf0a2!3q7$0p&cm4vk-b4v01b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ktucecapitest.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt.token_blacklist',
     'django_rest_passwordreset',
-    
 ]
 
 MIDDLEWARE = [
@@ -158,3 +158,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mertemir_54@outlook.com'
 EMAIL_HOST_PASSWORD='Esmer1263.'
 EMAIL_USE_SSL=False
+

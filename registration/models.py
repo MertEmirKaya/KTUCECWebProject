@@ -11,7 +11,7 @@ def upload_to(instance, filename):
 class ProfileModel(AbstractUser):
     id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     bio=models.TextField(null=True,blank=True)
-    school_number=models.CharField(max_length=20,unique=True,)
+    school_number=models.CharField(max_length=20,unique=True,null=True,blank=True)
     phone=models.CharField(max_length=20,unique=True)
     departmand=models.CharField(max_length=50,null=True,blank=True)
     classes=[('Hazırlık Sınıfı','Hazırlık Sınıfı'),('Birinci Sınıf','Birinci Sınıf'),('İkinci Sınıf','İkinci Sınıf'),('Üçüncü Sınıf','Üçüncü Sınıf'),('Dördüncü Sınıf','Dördüncü Sınıf'),('4+','4+')]
