@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)js#^n=z^c3e*=6=plmd@u!nayf0a2!3q7$0p&cm4vk-b4v01b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ktucecapievettest.herokuapp.com']
 
 
 # Application definition
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    
+
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -120,7 +120,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
