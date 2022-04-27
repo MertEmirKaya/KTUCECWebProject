@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-)js#^n=z^c3e*=6=plmd@u!nayf0a2!3q7$0p&cm4vk-b4v01b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ktucecapitest.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -39,7 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registration',
     'rest_framework',
-    
+    'django_filters',
+    'rest_framework.authtoken',
+    'drf_yasg',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -119,10 +126,39 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles')
 
 STATIC_URL = '/static/'
+MEDIA_ROOT= os.path.join(BASE_DIR,'media')
+MEDIA_URL='/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        
+    ]
+}
+
+AUTH_USER_MODEL = 'registration.ProfileModel'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),}
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'    
+
+EMAIL_HOST = 'smtp.outlook.com'
+EMAIT_PORT = 587 
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mertemir_54@outlook.com'
+EMAIL_HOST_PASSWORD=''
+EMAIL_USE_SSL=False
+
+CORS_ORIGIN_ALLOW_ALL = True

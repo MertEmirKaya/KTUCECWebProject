@@ -1,80 +1,148 @@
-
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import generics
 from  registration.models import ProfileModel
-from .serializers import ProfileModelSerializer
+from .serializers import ProfileModelSerializer,ChangePasswordSerializer
 from rest_framework.response import Response
-from django.contrib.auth.models import User
-class ProfileModelAPIView(generics.ListAPIView):
+from rest_framework import serializers
+from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
+import jwt
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView
+)
+
+class LoginAPIView(TokenObtainPairView):
+    
+    def post(self, request, *args, **kwargs):
+        email=request.data['email']
+        request.data._mutable = True
+        profile=ProfileModel.objects.get(email=email)
+        request.data['username']=profile.username
+        request.data._mutable = False
+        return super().post(request, *args, **kwargs)
+
+
+class LogoutView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class ProfileModelListAPIView(generics.ListAPIView):
     queryset = ProfileModel.objects.all()
     serializer_class = ProfileModelSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username','first_name','last_name','bio']
+
+    
 
 
 class ProfileDetailAPIView(generics.RetrieveAPIView):
     queryset=ProfileModel.objects.all()
     serializer_class=ProfileModelSerializer
-    
-    def retrieve(self, request, *args, **kwargs):
-        username=self.kwargs.get("user__username")
-        profile = get_object_or_404(ProfileModel, user__username=username)
-        serializer=ProfileModelSerializer(profile)
-        return Response(serializer.data)
-
+    lookup_field='username'
 
 
 class RegistrationAPIView(generics.CreateAPIView):
     queryset = ProfileModel.objects.all()
     serializer_class = ProfileModelSerializer
-
+    lookup_field='username'
     def create(self, request, *args, **kwargs):
-        profile_data=request.data
-
-        new_user=User.objects.create_user(first_name=profile_data['first_name'],
-                                     last_name=profile_data['last_name'],
-                                     username=str(profile_data['first_name']+profile_data['last_name']),
-                                     email=profile_data['email'],
-                                     password=profile_data['password'],
-                                        
-                                        )
-        new_user.save()
-
-
-
-        new_profile=ProfileModel.objects.create(user=new_user,
-                                                bio=profile_data['bio'],
-                                                school_number=profile_data['school_number'],
-                                                phone=profile_data['phone'],
-                                                departmand=profile_data['departmand'],
-                                                grade=profile_data['grade'],
-                                                fee=bool(profile_data['fee']),
-                                                register_date=profile_data['register_date'],
+        request.data._mutable = True
+        request.data["username"]=str(request.data['first_name']+request.data['last_name'])
+        if request.data['password1']!=request.data['password2']:
+            raise serializers.ValidationError('passwords must be the same!')
+        request.data['password']=request.data['password1']
+        request.data._mutable = False
+        return super().create(request, *args, **kwargs)
         
-        )
-        new_profile.save()
-        serializer=ProfileModelSerializer(new_profile)
 
-        return Response(serializer.data)
 
-class DeleteProfileAPIView(generics.RetrieveDestroyAPIView):
+class DeleteProfileAPIView(generics.DestroyAPIView):
     queryset = ProfileModel.objects.all()
     serializer_class = ProfileModelSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field='username'
 
 
-    def retrieve(self, request, *args, **kwargs):
-        username=self.kwargs.get("user__username")
-        profile = get_object_or_404(ProfileModel, user__username=username)
-        serializer=ProfileModelSerializer(profile)
-        return Response(serializer.data)
+    def delete(self, request, *args, **kwargs):
+        username=self.kwargs.get('username')
+        profile=ProfileModel.objects.get(username=username)
 
-    def destroy(self, request, *args, **kwargs):
-
-        username=self.kwargs.get("user__username")
+        key='super-secret'
+        payload={"id":str(request.user.id),}
+        token= jwt.encode(payload, key)
         
-        profile = get_object_or_404(ProfileModel, user__username=username)
-        serializer=ProfileModelSerializer(profile)
-        profile.delete()
-        return Response(serializer.data)
+        decoded = jwt.decode(token, options={"verify_signature": False}) # works in PyJWT >= v2.0
+        
+        if str(decoded['id']) == str(profile.id):
+            return super().delete(request, *args, **kwargs)
+
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 
+
+class UpdateProfileModelView(generics.UpdateAPIView):
+    serializer_class=ProfileModelSerializer
+    queryset=ProfileModel.objects.all()
+    permission_classes = [IsAuthenticated]
+    lookup_field='username'
+
+
+    def patch(self, request, *args, **kwargs):
+        
+        key='super-secret'
+        payload={"id":str(request.user.id),}
+        token= jwt.encode(payload, key)
+        decoded = jwt.decode(token, options={"verify_signature": False}) # works in PyJWT >= v2.0
+
+        username=self.kwargs.get('username')
+        profile=ProfileModel.objects.get(username=username)
+        
+        if str(decoded['id']) == str(profile.id):
+
+
+            return super().patch(request, *args, **kwargs)
+                
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+
+
+
+        
+class ChangePasswordAPIView(generics.UpdateAPIView):
+    serializer_class=ChangePasswordSerializer
+    permission_classes = [IsAuthenticated]
+    queryset=ProfileModel.objects.all()
+    lookup_field='username'            
+
+
+    def update(self, request, *args, **kwargs):
+
+        key='super-secret'
+        payload={"id":str(request.user.id),}
+        token= jwt.encode(payload, key)
+        decoded = jwt.decode(token, options={"verify_signature": False}) # works in PyJWT >= v2.0
+
+        username=self.kwargs.get('username')
+        profile=ProfileModel.objects.get(username=username)
+        
+        if str(decoded['id']) == str(profile.id):
+            return super().update(request, *args, **kwargs)
+               
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+     
