@@ -41,8 +41,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/',include('registration.api.urls')),
     path('api-auth/',include('rest_framework.urls')),
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),    
+    path('api/books/',include('books.api.urls')),  
     path('api/events/',include('events.api.urls')),
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  
     
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
