@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-)js#^n=z^c3e*=6=plmd@u!nayf0a2!3q7$0p&cm4vk-b4v01b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ktucecapitest.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['https://ktucectest.herokuapp.com/','127.0.0.1']
 
 
 # Application definition

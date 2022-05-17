@@ -10,6 +10,6 @@ class BookModelListAPIView(generics.ListAPIView):
     search_fields = ['title', 'content','author']
 
 class BookModelDetailAPIView(generics.RetrieveAPIView):
-    queryset=BookModel.objects.filter(available=True)
+    queryset=BookModel.objects.filter()
     serializer_class=BookModelSerializer
     lookup_field='title'    
