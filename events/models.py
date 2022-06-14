@@ -22,8 +22,8 @@ class EventModel(models.Model):
 
 
 
-def __str__(self) -> str:
-        return self.name
+    def __str__(self) -> str:
+        return str(self.name)
     
 
 class EventAlbumModel(models.Model):
@@ -42,13 +42,8 @@ class ImageModel(models.Model):
         primary_key = True,default = uuid.uuid4,editable = False
         )    
     album=models.ForeignKey(EventAlbumModel,on_delete=models.CASCADE,related_name='images')
-    image = VersatileImageField(
-        'Image',
-        upload_to=upload_to,
-        ppoi_field='image_ppoi'
-    )
-    image_ppoi = PPOIField()
-
+    image=models.ImageField(null=True,blank=True,upload_to=upload_to)
+    
     def __str__(self) -> str:
         return str(self.album)+' event image'
 
