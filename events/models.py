@@ -1,6 +1,5 @@
 from django.db import models
 import uuid
-from versatileimagefield.fields import VersatileImageField,PPOIField
 # Create your models here.
 
 def upload_to(instance, filename):
