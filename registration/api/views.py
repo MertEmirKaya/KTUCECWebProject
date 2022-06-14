@@ -50,13 +50,13 @@ class ProfileModelListAPIView(generics.ListAPIView):
 class ProfileDetailAPIView(generics.RetrieveAPIView):
     queryset=ProfileModel.objects.all()
     serializer_class=ProfileModelSerializer
-    lookup_field='username'
+    
 
 
 class RegistrationAPIView(generics.CreateAPIView):
     queryset = ProfileModel.objects.all()
     serializer_class = ProfileModelSerializer
-    lookup_field='username'
+    
     def create(self, request, *args, **kwargs):
         request.data._mutable = True
         request.data["username"]=str(request.data['first_name']+request.data['last_name'])
@@ -72,7 +72,7 @@ class DeleteProfileAPIView(generics.DestroyAPIView):
     queryset = ProfileModel.objects.all()
     serializer_class = ProfileModelSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field='username'
+    
 
 
     def delete(self, request, *args, **kwargs):
@@ -98,7 +98,7 @@ class UpdateProfileModelView(generics.UpdateAPIView):
     serializer_class=ProfileModelSerializer
     queryset=ProfileModel.objects.all()
     permission_classes = [IsAuthenticated]
-    lookup_field='username'
+   
 
 
     def patch(self, request, *args, **kwargs):
@@ -127,7 +127,7 @@ class ChangePasswordAPIView(generics.UpdateAPIView):
     serializer_class=ChangePasswordSerializer
     permission_classes = [IsAuthenticated]
     queryset=ProfileModel.objects.all()
-    lookup_field='username'            
+             
 
 
     def update(self, request, *args, **kwargs):

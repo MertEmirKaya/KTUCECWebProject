@@ -9,7 +9,7 @@ def upload_to(instance, filename):
     return f'profile_photos/{instance.id}/{filename}'
 
 class ProfileModel(AbstractUser):
-    id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    # id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     bio=models.TextField(null=True,blank=True)
     school_number=models.CharField(max_length=20,unique=True,null=True,blank=True)
     phone=models.CharField(max_length=20,unique=True,null=True,blank=True)

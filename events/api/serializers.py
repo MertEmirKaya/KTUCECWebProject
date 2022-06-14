@@ -1,13 +1,22 @@
 
+from email.mime import image
 from rest_framework import serializers
 from events.models import EventModel,ImageModel,EventAlbumModel,VideoModel
 from datetime import datetime
-
+from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 class ImageModelSerializer(serializers.ModelSerializer):
+    image = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+        ]
+    )
+
     class Meta:
-        model=ImageModel
-        fields=['image']
+        model = ImageModel
+        fields = ['image',]
+
+   
 
 
 class VideoModelSerializer(serializers.ModelSerializer):

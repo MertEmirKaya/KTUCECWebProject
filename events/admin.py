@@ -1,5 +1,5 @@
 from django.contrib import admin
-from.models import EventModel, ImageModel,EventAlbumModel,VideoModel
+from .models import EventModel, ImageModel,EventAlbumModel,VideoModel
 
 # Register your models here.
 
