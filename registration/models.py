@@ -7,6 +7,7 @@ def upload_to(instance, filename):
     return f'profile_photos/{instance.id}/{filename}'
 
 class ProfileModel(AbstractUser):
+    id=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     # id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     bio=models.TextField(null=True,blank=True)
     school_number=models.CharField(max_length=20,unique=True,null=True,blank=True)
