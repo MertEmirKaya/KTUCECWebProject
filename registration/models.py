@@ -18,7 +18,7 @@ class ProfileModel(AbstractUser):
     created_time=models.DateTimeField(auto_now_add=True)
     register_date=models.DateField(null=True,blank=True)
     image=models.ImageField(null=True,blank=True,upload_to=upload_to)
-    role=models.CharField(max_length=90,default='member')
+    role=models.CharField(max_length=90,default='member',null=True,blank=True)
 
     def __str__(self) -> str:
         return self.username   

@@ -23,18 +23,18 @@ class LoginAPIView(TokenObtainPairView):
         return super().post(request, *args, **kwargs)
 
 
-class LogoutView(generics.GenericAPIView):
-    permission_classes = (IsAuthenticated,)
+# class LogoutView(generics.GenericAPIView):
+#     permission_classes = (IsAuthenticated,)
 
-    def post(self, request):
-        try:
-            refresh_token = request.data["refresh_token"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
+#     def post(self, request):
+#         try:
+#             refresh_token = request.data["refresh_token"]
+#             token = RefreshToken(refresh_token)
+#             token.blacklist()
 
-            return Response(status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+#             return Response(status=status.HTTP_205_RESET_CONTENT)
+#         except Exception as e:
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
