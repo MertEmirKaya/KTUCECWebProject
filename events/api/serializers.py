@@ -4,12 +4,18 @@ from datetime import datetime
 
 
 class ImageModelSerializer(serializers.ModelSerializer):
-
+    image_path=serializers.SerializerMethodField()
     class Meta:
         model = ImageModel
-        fields = ['image',]
+        fields = ['image','image_path',]
 
-   
+    def get_image_path(self,obj):
+        image=str(obj.image)
+        image_slash=image.find("/",3)
+        image_path=str(image[image_slash:])
+        print(image_slash)
+        return image_path
+
 
 
 class VideoModelSerializer(serializers.ModelSerializer):

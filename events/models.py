@@ -3,7 +3,8 @@ from django.db import models
 # Create your models here.
 
 def upload_to(instance, filename):
-    return f'events/{instance.album}/{filename}'
+    album_path=str(instance.album).replace(" ","")
+    return f'events/{album_path}/{filename}'
 
 class EventModel(models.Model):
 
