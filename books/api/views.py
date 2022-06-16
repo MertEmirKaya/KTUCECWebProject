@@ -12,4 +12,4 @@ class BookModelListAPIView(generics.ListAPIView):
 class BookModelDetailAPIView(generics.RetrieveAPIView):
     queryset=BookModel.objects.filter()
     serializer_class=BookModelSerializer
-    lookup_field='title'    
+      
