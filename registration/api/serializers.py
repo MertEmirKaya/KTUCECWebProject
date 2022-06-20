@@ -19,14 +19,22 @@ class ProfileModelSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Telefon numarası 10 haneli girilmelidir.")
         return value
 
-    def validate(self, data):
+    def validate_first_name(self,value):
         numbers=["1","2","3","4","5","6","7","8","9","0"]
         for number in numbers:
-            if number in data['username']:
+            if number in value:
                 raise serializers.ValidationError({'Error':"No int characters!"})
+        return value
+
+    def validate_last_name(self,value):
+        numbers=["1","2","3","4","5","6","7","8","9","0"]
+        for number in numbers:
+            if number in value:
+                raise serializers.ValidationError({'Error':"No int characters!"})
+        return value
 
 
-        return data
+
 
 
     
