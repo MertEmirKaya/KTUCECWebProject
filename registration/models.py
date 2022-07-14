@@ -9,7 +9,7 @@ def upload_to(instance, filename):
 
 class ProfileModel(AbstractUser):
     id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
-    email = models.EmailField(("email address"), blank=True,unique=True)
+
     bio=models.TextField(null=True,blank=True)
     school_number=models.CharField(max_length=20,unique=True,null=True,blank=True)
     phone=models.CharField(max_length=20,unique=True,null=True,blank=True)
@@ -22,8 +22,7 @@ class ProfileModel(AbstractUser):
     image=models.ImageField(null=True,blank=True,upload_to=upload_to)
     role=models.CharField(max_length=90,default='member',null=True,blank=True)
     
-    USERNAME_FIELD='email'
-    REQUIRED_FIELDS = []
+
     def __str__(self) -> str:
         return self.username   
 
