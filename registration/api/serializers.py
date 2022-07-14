@@ -2,12 +2,13 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from registration.models import ProfileModel
 from django.contrib.auth.hashers import make_password
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import AccessToken
 class ProfileModelSerializer(serializers.ModelSerializer):
     
     class Meta:
         model=ProfileModel
-        fields=['id','bio','username','first_name','last_name','email','phone','departmand','grade','created_time','school_number','image','password']
+        fields=['id','username','first_name','last_name','email','phone','departmand','grade','created_time','school_number','image','password']
         read_only_fields=('fee','register_date')    
         extra_kwargs = {
             'password': {'write_only': True},
@@ -85,3 +86,6 @@ class ChangePasswordSerializer(serializers.Serializer):
         instance.save()
 
         return instance
+
+
+

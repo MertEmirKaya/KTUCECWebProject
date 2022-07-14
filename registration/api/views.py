@@ -12,19 +12,21 @@ import jwt
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import (
     TokenObtainPairView
+
 )
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class LoginAPIView(TokenObtainPairView):
     '''
     
     '''
-    def post(self, request, *args, **kwargs):
-        email=request.data['email']
-        request.POST._mutable = True
-        profile=ProfileModel.objects.get(email=email)
-        request.data['username']=profile.username
-        request.POST._mutable = False
-        return super().post(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     email=request.data['email']
+    #     request.POST._mutable = True
+    #     profile=ProfileModel.objects.get(email=email)
+    #     request.data['username']=profile.username
+    #     request.POST._mutable = False
+    #     return super().post(request, *args, **kwargs)
 
 
 class LogoutView(generics.GenericAPIView):

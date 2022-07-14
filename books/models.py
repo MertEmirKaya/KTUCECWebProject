@@ -1,12 +1,14 @@
 
 from django.db import models
 from django.conf import settings
+import uuid
 # Create your models here.
 
 def upload_to(instance, filename):
     return f'books/{instance.book}/{filename}'
 
 class BookModel(models.Model):
+    id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     title=models.CharField(max_length=100)
     author=models.CharField(max_length=100)
     content=models.CharField(max_length=100)
@@ -21,6 +23,7 @@ class BookModel(models.Model):
         return self.title    
 
 class ImageBookModel(models.Model):
+    id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     book=models.ForeignKey(BookModel,on_delete=models.CASCADE,related_name='images')
     image=models.ImageField(null=True,blank=True,upload_to=upload_to)
 

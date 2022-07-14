@@ -1,14 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
+import uuid
 # Create your models here.
 
 def upload_to(instance, filename):
     return f'profile_photos/{instance.id}/{filename}'
 
 class ProfileModel(AbstractUser):
-    id=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    # id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    email = models.EmailField(("email address"), blank=True,unique=True)
     bio=models.TextField(null=True,blank=True)
     school_number=models.CharField(max_length=20,unique=True,null=True,blank=True)
     phone=models.CharField(max_length=20,unique=True,null=True,blank=True)
@@ -20,10 +21,11 @@ class ProfileModel(AbstractUser):
     register_date=models.DateField(null=True,blank=True)
     image=models.ImageField(null=True,blank=True,upload_to=upload_to)
     role=models.CharField(max_length=90,default='member',null=True,blank=True)
-
+    
+    USERNAME_FIELD='email'
+    REQUIRED_FIELDS = []
     def __str__(self) -> str:
         return self.username   
-
 
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)

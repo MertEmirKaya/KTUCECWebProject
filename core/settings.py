@@ -95,16 +95,31 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
+   #  real postgres
 DATABASES = {
      'default': {
          'ENGINE':'django.db.backends.postgresql_psycopg2',
-         'NAME':'ddon3348lcmt0r',
-         'USER':'gpwtjitebugjcd',
-         'PASSWORD':'4a4af48d15410342ebff56ca0f107c25fc43d7023e11b72032524e71be7f1cf7',
-         'HOST':'ec2-54-228-218-84.eu-west-1.compute.amazonaws.com',
+         'NAME':'de2vinhk2ostom',
+         'USER':'kudarggvliitwm',
+         'PASSWORD':'779d63a831beed70408c93cb8f532e90aff8f1f30429c0dca6b23459cc7f8ed5',
+         'HOST':'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
          'PORT':'5432',
      }
  }
+
+    # for local
+# DATABASES = {
+#      'default': {
+#          'ENGINE':'django.db.backends.postgresql_psycopg2',
+#          'NAME':'df0bqfvfs4gsre',
+#          'USER':'jhnfrvehkxnswh',
+#          'PASSWORD':'5f51a67dd77be8e183e6d7d3a5e91eb9977d57ff30684fb23dbf6809266ad48b',
+#          'HOST':'ec2-54-246-185-161.eu-west-1.compute.amazonaws.com',
+#          'PORT':'5432',
+#      }
+#  }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
