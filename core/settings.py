@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)js#^n=z^c3e*=6=plmd@u!nayf0a2!3q7$0p&cm4vk-b4v01b'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -96,28 +99,28 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # }
 
    #  real postgres
-DATABASES = {
-     'default': {
-         'ENGINE':'django.db.backends.postgresql_psycopg2',
-         'NAME':'de2vinhk2ostom',
-         'USER':'kudarggvliitwm',
-         'PASSWORD':'779d63a831beed70408c93cb8f532e90aff8f1f30429c0dca6b23459cc7f8ed5',
-         'HOST':'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
-         'PORT':'5432',
-     }
- }
-
-    # for local
 # DATABASES = {
 #      'default': {
 #          'ENGINE':'django.db.backends.postgresql_psycopg2',
-#          'NAME':'df0bqfvfs4gsre',
-#          'USER':'jhnfrvehkxnswh',
-#          'PASSWORD':'5f51a67dd77be8e183e6d7d3a5e91eb9977d57ff30684fb23dbf6809266ad48b',
-#          'HOST':'ec2-54-246-185-161.eu-west-1.compute.amazonaws.com',
+#          'NAME':'de2vinhk2ostom',
+#          'USER':'kudarggvliitwm',
+#          'PASSWORD':'779d63a831beed70408c93cb8f532e90aff8f1f30429c0dca6b23459cc7f8ed5',
+#          'HOST':'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
 #          'PORT':'5432',
 #      }
 #  }
+
+    # for local
+DATABASES = {
+     'default': {
+         'ENGINE':'django.db.backends.postgresql_psycopg2',
+         'NAME':env('NAME'),
+         'USER':env('USER'),
+         'PASSWORD':env('PASSWORD'),
+         'HOST':'ec2-54-246-185-161.eu-west-1.compute.amazonaws.com',
+         'PORT':'5432',
+     }
+ }
 
 
 
@@ -197,8 +200,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.outlook.com'
 EMAIT_PORT = 587 
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'mertemir_54@outlook.com'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=''
 EMAIL_USE_SSL=False
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+#AWS 
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_S3_ACCESS_KEY_ID=env('AWS_S3_ACCESS_KEY_ID'),
+AWS_S3_SECRET_ACCESS_KEY=env('AWS_S3_SECRET_ACCESS_KEY'),
+AWS_STORAGE_BUCKET_NAME=env('AWS_STORAGE_BUCKET_NAME'),
+AWS_QUERYSTRING_AUTH=False
