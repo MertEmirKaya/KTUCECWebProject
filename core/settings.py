@@ -102,9 +102,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE':'django.db.backends.postgresql_psycopg2',
-        'NAME':env('DATABASE_NAME'),
-        'USER':env('DATABASE_USER'),
-        'PASSWORD':env('DATABASE_PASS'),
+        'NAME':os.environ.get('DATABASE_NAME'),
+        'USER':os.environ.get('DATABASE_USER'),
+        'PASSWORD':os.environ.get('DATABASE_PASS'),
         'HOST':'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
         'PORT':'5432',
      }
@@ -210,7 +210,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_S3_ACCESS_KEY_ID=env('AWS_S3_ACCESS_KEY_ID'),
-AWS_S3_SECRET_ACCESS_KEY=env('AWS_S3_SECRET_ACCESS_KEY'),
-AWS_STORAGE_BUCKET_NAME=env('AWS_STORAGE_BUCKET_NAME'),
+AWS_S3_ACCESS_KEY_ID=os.environ.get('AWS_S3_ACCESS_KEY_ID'),
+AWS_S3_SECRET_ACCESS_KEY=os.environ.get('AWS_S3_SECRET_ACCESS_KEY'),
+AWS_STORAGE_BUCKET_NAME=os.environ.get('AWS_STORAGE_BUCKET_NAME'),
 AWS_QUERYSTRING_AUTH=False
