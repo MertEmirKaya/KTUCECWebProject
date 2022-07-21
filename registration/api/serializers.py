@@ -8,7 +8,7 @@ class ProfileModelSerializer(serializers.ModelSerializer):
     
     class Meta:
         model=ProfileModel
-        fields=['id','username','first_name','last_name','email','phone','departmand','grade','created_time','school_number','image','password']
+        fields=['id','first_name','last_name','email','phone','department','grade','created_time','school_number','image','password']
         read_only_fields=('fee','register_date')    
         extra_kwargs = {
             'password': {'write_only': True},
@@ -52,7 +52,7 @@ class ProfileModelSerializer(serializers.ModelSerializer):
         instance.bio = validated_data.get('bio', instance.bio)
         instance.school_number = validated_data.get('school_number', instance.school_number)
         instance.phone= validated_data.get('phone', instance.phone)
-        instance.departmand= validated_data.get('departmand', instance.departmand)
+        instance.department= validated_data.get('department', instance.department)
         instance.grade= validated_data.get('grade', instance.grade)
         instance.image= validated_data.get('image', instance.image)
         instance.save()

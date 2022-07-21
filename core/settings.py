@@ -99,28 +99,28 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # }
 
    #  real postgres
+DATABASES = {
+     'default': {
+        'ENGINE':'django.db.backends.postgresql_psycopg2',
+        'NAME':env('DATABASE_NAME'),
+        'USER':env('DATABASE_USER'),
+        'PASSWORD':env('DATABASE_PASS'),
+        'HOST':'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
+        'PORT':'5432',
+     }
+ }
+
+    # for local
 # DATABASES = {
 #      'default': {
 #          'ENGINE':'django.db.backends.postgresql_psycopg2',
-#          'NAME':'de2vinhk2ostom',
-#          'USER':'kudarggvliitwm',
-#          'PASSWORD':'779d63a831beed70408c93cb8f532e90aff8f1f30429c0dca6b23459cc7f8ed5',
-#          'HOST':'ec2-52-48-159-67.eu-west-1.compute.amazonaws.com',
+#          'NAME':env('DATABASE_NAME'),
+#          'USER':env('DATABASE_USER'),
+#          'PASSWORD':env('DATABASE_PASS'),
+#          'HOST':'ec2-54-228-218-84.eu-west-1.compute.amazonaws.com',
 #          'PORT':'5432',
 #      }
 #  }
-
-    # for local
-DATABASES = {
-     'default': {
-         'ENGINE':'django.db.backends.postgresql_psycopg2',
-         'NAME':env('NAME'),
-         'USER':env('USER'),
-         'PASSWORD':env('PASSWORD'),
-         'HOST':'ec2-54-246-185-161.eu-west-1.compute.amazonaws.com',
-         'PORT':'5432',
-     }
- }
 
 
 

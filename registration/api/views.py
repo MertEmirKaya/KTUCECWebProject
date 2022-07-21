@@ -20,13 +20,13 @@ class LoginAPIView(TokenObtainPairView):
     '''
     
     '''
-    def post(self, request, *args, **kwargs):
-        email=request.data['email']
-        request.POST._mutable = True
-        profile=ProfileModel.objects.get(email=email)
-        request.data['username']=profile.username
-        request.POST._mutable = False
-        return super().post(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     email=request.data['email']
+    #     request.POST._mutable = True
+    #     profile=ProfileModel.objects.get(email=email)
+    #     request.data['username']=profile.username
+    #     request.POST._mutable = False
+    #     return super().post(request, *args, **kwargs)
 
 
 class LogoutView(generics.GenericAPIView):
@@ -61,16 +61,11 @@ class ProfileDetailAPIView(generics.GenericAPIView):
 
     serializer_class=ProfileModelSerializer
     permission_classes = [IsAuthenticated]
-
+    def get_object(self):
+        return self.request.user
     def get(self, request, *args, **kwargs):
-        key='super-secret'
-        payload={"id":str(request.user.id),}
-        token= jwt.encode(payload, key)
-        
-        decoded = jwt.decode(token, options={"verify_signature": False})
-        
-        profile=ProfileModel.objects.get(id=decoded['id'])
-        profile_serializer=ProfileModelSerializer(profile)
+
+        profile_serializer=self.serializer_class(self.request.user)
         return Response(data=profile_serializer.data,status=status.HTTP_200_OK)
 
 
