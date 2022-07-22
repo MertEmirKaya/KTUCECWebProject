@@ -4,6 +4,7 @@ import uuid
 
 def upload_to(instance, filename):
     album_path=str(instance.album).replace(" ","")
+    filename=str(filename).replace(" ","")
     return f'events/{album_path}/{filename}'
 
 class EventModel(models.Model):
