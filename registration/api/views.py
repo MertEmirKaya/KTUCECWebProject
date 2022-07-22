@@ -3,7 +3,8 @@ from rest_framework import generics
 from  registration.models import ProfileModel
 from .serializers import ProfileModelSerializer,ChangePasswordSerializer
 from rest_framework.response import Response
-from django.http import JsonResponse
+
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework import serializers
 from rest_framework import filters
@@ -31,7 +32,7 @@ class LoginAPIView(TokenObtainPairView):
 
 class LogoutView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
-
+    token_type=RefreshToken
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
@@ -41,16 +42,6 @@ class LogoutView(generics.GenericAPIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-
-class ProfileModelListAPIView(generics.ListAPIView):
-    queryset = ProfileModel.objects.all()
-    serializer_class = ProfileModelSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['username','first_name','last_name','bio']
-
-    
 
 
 class ProfileDetailAPIView(generics.GenericAPIView):

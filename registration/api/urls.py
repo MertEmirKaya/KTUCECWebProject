@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import (ProfileModelListAPIView,
+from .views import (
                     RegistrationAPIView,
                     DeleteProfileAPIView,
                     ProfileDetailAPIView,UpdateProfileModelView,ChangePasswordAPIView,LoginAPIView,LogoutView)
@@ -9,7 +9,6 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('',ProfileModelListAPIView.as_view()),
     path('create/',RegistrationAPIView.as_view()),
     path('profile/delete/',DeleteProfileAPIView.as_view()),
     path('profile/',ProfileDetailAPIView.as_view()),

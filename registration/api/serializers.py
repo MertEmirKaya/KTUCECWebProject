@@ -3,7 +3,7 @@ from rest_framework import serializers
 from registration.models import ProfileModel
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken,RefreshToken
 class ProfileModelSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -47,7 +47,6 @@ class ProfileModelSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.username = str(instance.first_name+instance.last_name)
         instance.email = validated_data.get('email', instance.email)
         instance.bio = validated_data.get('bio', instance.bio)
         instance.school_number = validated_data.get('school_number', instance.school_number)
