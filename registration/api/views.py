@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework import generics
 from  registration.models import ProfileModel
-from .serializers import ProfileModelSerializer,ChangePasswordSerializer
+from .serializers import ProfileModelSerializer,ChangePasswordSerializer,LogoutSerializer
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -32,15 +32,15 @@ class LoginAPIView(TokenObtainPairView):
 
 class LogoutView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
-    token_type=RefreshToken
+    serializer_class=LogoutSerializer
     def post(self, request):
-        try:
-            refresh_token = request.data["refresh_token"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
+         try:
+             refresh_token = request.data["refresh_token"]
+             token = RefreshToken(refresh_token)
+             token.blacklist()
 
-            return Response(status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
+             return Response(status=status.HTTP_205_RESET_CONTENT)
+         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

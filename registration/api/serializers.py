@@ -1,9 +1,10 @@
+
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from registration.models import ProfileModel
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.tokens import AccessToken,RefreshToken
+from rest_framework_simplejwt.tokens import AccessToken,RefreshToken,TokenError
 class ProfileModelSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -88,3 +89,13 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 
+
+class LogoutSerializer(serializers.Serializer):
+    refresh=serializers.CharField()
+    def validate(self, attrs):
+        self.token=attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+        return super().save(**kwargs)   
+           
