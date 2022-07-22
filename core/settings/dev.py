@@ -19,6 +19,5 @@ AWS_STORAGE_BUCKET_NAME=os.environ.get('AWS_STORAGE_BUCKET_NAME'),
 AWS_URL=os.environ.get('AWS_URL')
 AWS_QUERYSTRING_AUTH=False
 
-STATIC_URL = AWS_URL + '/static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 MEDIA_URL = AWS_URL + '/media/'
