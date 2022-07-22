@@ -11,10 +11,10 @@ class ImageModelSerializer(serializers.ModelSerializer):
 
     def get_image_path(self,obj):
         image=str(obj.image)
-        image_slash=image.find("/",3)
-        image_path=str(image[image_slash:])
-        print(image_slash)
-        return image_path
+        # image_slash=image.find("/",3)
+        # image_path=str(image[image_slash:])
+        # print(image_slash)
+        return image
 
 
 
