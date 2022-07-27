@@ -10,7 +10,8 @@ from rest_framework import serializers
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 import jwt
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.tokens import RefreshToken,TokenError
 from rest_framework_simplejwt.views import (
     TokenObtainPairView
 
@@ -18,6 +19,16 @@ from rest_framework_simplejwt.views import (
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class LoginAPIView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+        print(serializer.validated_data)
+        serializer.validated_data.pop('refresh')
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
     '''
     
     '''
@@ -44,7 +55,7 @@ class LogoutView(generics.GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProfileDetailAPIView(generics.GenericAPIView):
+class ProfileDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     '''
     JWT token is required!
     An Api which returns the requested user's profile
@@ -59,6 +70,11 @@ class ProfileDetailAPIView(generics.GenericAPIView):
         profile_serializer=self.serializer_class(self.request.user)
         return Response(data=profile_serializer.data,status=status.HTTP_200_OK)
 
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
 
 class RegistrationAPIView(generics.CreateAPIView):
     queryset = ProfileModel.objects.all()
@@ -75,21 +91,21 @@ class RegistrationAPIView(generics.CreateAPIView):
         
 
 
-class DeleteProfileAPIView(generics.DestroyAPIView):
-    queryset = ProfileModel.objects.all()
-    serializer_class = ProfileModelSerializer
-    permission_classes = [IsAuthenticated]
-    def get_object(self):
-        return self.request.user
+# class DeleteProfileAPIView(generics.DestroyAPIView):
+#     queryset = ProfileModel.objects.all()
+#     serializer_class = ProfileModelSerializer
+#     permission_classes = [IsAuthenticated]
+#     def get_object(self):
+#         return self.request.user
     
 
-class UpdateProfileModelView(generics.UpdateAPIView):
-    serializer_class=ProfileModelSerializer
-    queryset=ProfileModel.objects.all()
-    permission_classes = [IsAuthenticated]
+# class UpdateProfileModelView(generics.UpdateAPIView):
+#     serializer_class=ProfileModelSerializer
+#     queryset=ProfileModel.objects.all()
+#     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user
+#     def get_object(self):
+#         return self.request.user
 
 
 class ChangePasswordAPIView(generics.UpdateAPIView):

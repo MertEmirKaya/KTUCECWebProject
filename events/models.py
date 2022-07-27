@@ -17,7 +17,7 @@ class EventModel(models.Model):
     statement=models.TextField()
     content=models.CharField(max_length=90,blank=True)
     is_ready=models.BooleanField(default=False,)
-
+    application_url=models.URLField(max_length=200,null=True,blank=True)
 
 
     def __str__(self) -> str:
