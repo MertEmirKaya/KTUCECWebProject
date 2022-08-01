@@ -5,6 +5,7 @@ from registration.models import ProfileModel
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import AccessToken,RefreshToken,TokenError
+import string
 class ProfileModelSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -19,7 +20,16 @@ class ProfileModelSerializer(serializers.ModelSerializer):
     def validate_phone(self,value):
         if len(value) !=10:
             raise serializers.ValidationError("Telefon numarası 10 haneli girilmelidir.")
+
+        for i in value:
+            if not ( i in  ['0','1','2','3','4','5',"6","7","8","9"]):
+                raise serializers.ValidationError('do not use letters in phone number!')
+
+
+
         return value
+
+
 
     def validate_first_name(self,value):
         numbers=["1","2","3","4","5","6","7","8","9","0"]

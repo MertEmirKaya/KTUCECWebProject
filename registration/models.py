@@ -17,7 +17,7 @@ class ProfileModel(AbstractUser):
     username = models.CharField(("username"),default=uuid.uuid4,max_length=150,unique=True,help_text=("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),validators=[username_validator], error_messages={"unique": ("A user with that username already exists."),})
     bio=models.TextField(null=True,blank=True)
     school_number=models.CharField(max_length=20,unique=True,null=True,blank=True)
-    phone=models.CharField(max_length=20,unique=True,null=True,blank=True)
+    phone=models.CharField(max_length=10,unique=True,null=True,blank=True)
     department=models.CharField(max_length=50,null=True,blank=True)
     classes=[('0','Hazırlık Sınıfı'),('1','Birinci Sınıf'),('2','İkinci Sınıf'),('3','Üçüncü Sınıf'),('4','Dördüncü Sınıf'),('4+','5')]
     grade=models.CharField(max_length=20,choices=classes,null=True,blank=True)
