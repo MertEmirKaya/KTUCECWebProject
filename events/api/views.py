@@ -5,6 +5,11 @@ import datetime
 from rest_framework.pagination import PageNumberPagination
 now= datetime.datetime.now()
 
+class CustomPagination(PageNumberPagination):
+    page_size=4
+
+
+
 class UpComingEventModelListAPIView(generics.ListAPIView):
     queryset=EventModel.objects.filter(is_ready=True,events_date__gt=now)
     serializer_class=EventModelSerializer    
@@ -12,7 +17,7 @@ class UpComingEventModelListAPIView(generics.ListAPIView):
 class PastEventModelListAPIView(generics.ListAPIView):
     queryset=EventModel.objects.filter(is_ready=True,)
     serializer_class=EventModelSerializer   
-    pagination_class=PageNumberPagination
+    pagination_class=CustomPagination
 
 class EventModelDetailAPIView(generics.RetrieveAPIView):
 

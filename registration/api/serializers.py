@@ -25,8 +25,6 @@ class ProfileModelSerializer(serializers.ModelSerializer):
             if not ( i in  ['0','1','2','3','4','5',"6","7","8","9"]):
                 raise serializers.ValidationError('do not use letters in phone number!')
 
-
-
         return value
 
 

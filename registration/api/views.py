@@ -82,7 +82,6 @@ class RegistrationAPIView(generics.CreateAPIView):
     
     def create(self, request, *args, **kwargs):
         request.POST._mutable = True
-        request.data["username"]=str(request.data['first_name']+request.data['last_name'])
         if request.data['password1']!=request.data['password2']:
             raise serializers.ValidationError('passwords must be the same!')
         request.data['password']=request.data['password1']

@@ -1,5 +1,7 @@
 from core.settings.base import *
 
+ALLOWED_HOSTS = ['ktucectest.herokuapp.com','127.0.0.1']
+
 DATABASES = {
      'default': {
         'ENGINE':'django.db.backends.postgresql_psycopg2',
@@ -16,7 +18,7 @@ DATABASES = {
 # AWS_S3_ACCESS_KEY_ID=os.environ.get('AWS_S3_ACCESS_KEY_ID'),
 # AWS_S3_SECRET_ACCESS_KEY=os.environ.get('AWS_S3_SECRET_ACCESS_KEY'),
 # AWS_STORAGE_BUCKET_NAME=os.environ.get('AWS_STORAGE_BUCKET_NAME'),
-# AWS_URL=os.environ.get('AWS_URL')
+# # AWS_URL=os.environ.get('AWS_URL')
 # AWS_QUERYSTRING_AUTH=False
 
 

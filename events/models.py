@@ -39,7 +39,7 @@ class ImageModel(models.Model):
     image=models.ImageField(null=True,blank=True,upload_to=upload_to)
     
     def __str__(self) -> str:
-        return str(self.album)+' event image'
+        return "event image of"+ str(self.album)
 
 class VideoModel(models.Model):
     id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
@@ -47,4 +47,5 @@ class VideoModel(models.Model):
     video=models.FileField(upload_to=upload_to)
 
     def __str__(self) -> str:
-        return str(self.album)+' event video'    
+
+        return "event video of"+ str(self.album)   
