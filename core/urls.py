@@ -44,6 +44,7 @@ urlpatterns = [
     path('api/books/',include('books.api.urls')),  
     path('api/events/',include('events.api.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  
+    path('api/forms/',include('forms.api.urls'))
     
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

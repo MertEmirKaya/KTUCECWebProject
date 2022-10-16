@@ -4,6 +4,7 @@ from PIL import Image
 import uuid
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.conf import settings
+from traitlets import default
 # Create your models here.
 username_validator = UnicodeUsernameValidator()
 def upload_to(instance, filename):
@@ -26,6 +27,7 @@ class ProfileModel(AbstractUser):
     register_date=models.DateField(null=True,blank=True)
     image=models.ImageField(null=True,blank=True,upload_to=upload_to)
     role=models.CharField(max_length=90,default='member',null=True,blank=True)
+    
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=['username']
 

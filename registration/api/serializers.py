@@ -11,7 +11,7 @@ class ProfileModelSerializer(serializers.ModelSerializer):
     class Meta:
         model=ProfileModel
         fields=['id','first_name','last_name','email','phone','department','grade','created_time','school_number','image','password']
-        read_only_fields=('fee','register_date')    
+        read_only_fields=('fee','register_date',)    
         extra_kwargs = {
             'password': {'write_only': True},
             'password1': {'write_only': True},
