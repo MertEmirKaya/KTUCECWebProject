@@ -1,9 +1,9 @@
 asgiref==3.5.0
 asttokens==2.0.7
-awsebcli==3.20.3
+awsebcli
 backcall==0.2.0
-boto3==1.24.32
-botocore==1.23.54
+boto3
+botocore
 cement==2.8.2
 certifi==2021.10.8
 charset-normalizer==2.0.12
