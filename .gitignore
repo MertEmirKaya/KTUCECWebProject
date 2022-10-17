@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 
-local.py
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
